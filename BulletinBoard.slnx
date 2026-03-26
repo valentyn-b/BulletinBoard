@@ -1,8 +1,9 @@
 <Solution>
   <Folder Name="/database/" />
   <Folder Name="/database/scripts/">
-    <File Path="000_Create_Database.sql" />
-    <File Path="001_Create_Announcements_Table.sql" />
+    <File Path="database/scripts/000_Create_Database.sql" />
+    <File Path="database/scripts/001_Create_Announcements_Table.sql" />
+    <File Path="database/scripts/002_Create_StoredProcedures.sql" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/BulletinBoard.Api/BulletinBoard.Api.csproj" />
