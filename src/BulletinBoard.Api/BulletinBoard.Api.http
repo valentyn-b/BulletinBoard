@@ -1,6 +1,17 @@
-@BulletinBoard.Api_HostAddress = http://localhost:5160
+@BulletinBoard.Api_HostAddress = https://localhost:7233
 
-GET {{BulletinBoard.Api_HostAddress}}/weatherforecast/
+### 1. Create a new announcement
+POST {{BulletinBoard.Api_HostAddress}}/api/announcements
+Content-Type: application/json
+
+{
+  "title": "Selling a washing machine",
+  "description": "Perfect condition, works quietly. Pick up only.",
+  "category": 1,
+  "subCategory": 102,
+  "authorId": null
+}
+
+### 2. Get all announcements
+GET {{BulletinBoard.Api_HostAddress}}/api/announcements
 Accept: application/json
-
-###

@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\BulletinBoard.Core\BulletinBoard.Core.csproj" />
+    <ProjectReference Include="..\BulletinBoard.Infrastructure\BulletinBoard.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
