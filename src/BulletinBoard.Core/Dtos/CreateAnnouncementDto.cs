@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BulletinBoard.Core.Dtos
 {
-    public class CreateAnnouncementDtoі
+    public class CreateAnnouncementDto
     {
         [Required(ErrorMessage = "Title is required")]
         [MaxLength(100, ErrorMessage = "Title cannot exceed 100 characters")]

@@ -8,6 +8,7 @@
   <Folder Name="/src/">
     <Project Path="src/BulletinBoard.Api/BulletinBoard.Api.csproj" />
     <Project Path="src/BulletinBoard.Core/BulletinBoard.Core.csproj" />
+    <Project Path="src/BulletinBoard.Infrastructure/BulletinBoard.Infrastructure.csproj" Id="36c1b3d1-f98b-4f3d-82bc-391e1aeaabc8" />
     <Project Path="src/BulletinBoard.UI/BulletinBoard.UI.csproj" />
   </Folder>
 </Solution>
