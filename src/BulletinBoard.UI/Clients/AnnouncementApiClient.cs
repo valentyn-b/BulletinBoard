@@ -1,7 +1,7 @@
-﻿using BulletinBoard.UI.Models.Dtos;
-using BulletinBoard.UI.Models.Enums;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using BulletinBoard.UI.Models.Dtos;
+using BulletinBoard.UI.Models.Enums;
 
 namespace BulletinBoard.UI.Clients
 {
@@ -39,18 +39,18 @@ namespace BulletinBoard.UI.Clients
 
         public async Task<AnnouncementDto?> GetByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<AnnouncementDto>($"{BaseEndpoint}/{id}");
+            return await _httpClient.GetFromJsonAsync<AnnouncementDto>($"{BaseEndpoint}/{id}", _jsonOptions);
         }
 
         public async Task CreateAsync(CreateAnnouncementDto dto)
         {
-            var response = await _httpClient.PostAsJsonAsync(BaseEndpoint, dto);
+            var response = await _httpClient.PostAsJsonAsync(BaseEndpoint, dto, _jsonOptions);
             response.EnsureSuccessStatusCode();
         }
 
         public async Task UpdateAsync(int id, UpdateAnnouncementDto dto)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{BaseEndpoint}/{id}", dto);
+            var response = await _httpClient.PutAsJsonAsync($"{BaseEndpoint}/{id}", dto, _jsonOptions);
             response.EnsureSuccessStatusCode();
         }
 

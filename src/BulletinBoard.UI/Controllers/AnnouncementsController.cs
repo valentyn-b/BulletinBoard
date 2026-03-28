@@ -20,6 +20,20 @@ namespace BulletinBoard.UI.Controllers
             return View(announcements);
         }
 
+        // GET: /Announcements/Details/5
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var announcement = await _apiClient.GetByIdAsync(id);
+
+            if (announcement == null)
+            {
+                return NotFound();
+            }
+
+            return View(announcement);
+        }
+
         // GET: /Announcements/Create
         [HttpGet]
         public IActionResult Create()
