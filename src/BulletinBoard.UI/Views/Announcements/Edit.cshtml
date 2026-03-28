@@ -1,0 +1,70 @@
+﻿@using BulletinBoard.UI.Models.Enums
+@model BulletinBoard.UI.Models.Dtos.UpdateAnnouncementDto
+
+@{
+    ViewData["Title"] = "Редагування оголошення";
+}
+
+<div class="container mt-4" style="max-width: 800px;">
+    <div class="mb-4 d-flex justify-content-between align-items-center">
+        <a asp-action="Details" asp-route-id="@Model.Id" class="text-decoration-none text-muted transition-hover">
+            <i class="bi bi-arrow-left"></i> Скасувати та повернутися
+        </a>
+        <h2 class="fw-bold mb-0">Редагування</h2>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-body p-4 p-md-5">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-4">
+                    <label asp-for="Title" class="form-label fw-semibold">Назва оголошення <span class="text-danger">*</span></label>
+                    <input asp-for="Title" class="form-control form-control-lg bg-light border-0" placeholder="Наприклад: Продам MacBook Pro 16" required />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="Category" class="form-label fw-semibold">Категорія <span class="text-danger">*</span></label>
+                        <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-select form-select-lg bg-light border-0" required>
+                            <option value="">Оберіть категорію...</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="SubCategory" class="form-label fw-semibold">Підкатегорія <span class="text-danger">*</span></label>
+                        <select asp-for="SubCategory" asp-items="Html.GetEnumSelectList<SubCategory>()" class="form-select form-select-lg bg-light border-0" required>
+                            <option value="">Оберіть підкатегорію...</option>
+                        </select>
+                        <span asp-validation-for="SubCategory" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="form-label fw-semibold">Опис <span class="text-danger">*</span></label>
+                    <textarea asp-for="Description" class="form-control bg-light border-0" rows="6" placeholder="Детально опишіть ваш товар чи послугу..." required></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-5 p-3 bg-light rounded-3">
+                    <div class="form-check form-switch fs-5">
+                        <input class="form-check-input" type="checkbox" role="switch" asp-for="Status">
+                            <label class="form-check-label fw-semibold ms-2" asp-for="Status">
+                                Оголошення активне
+                            </label>
+                        </div>
+                        <div class="form-text mt-2">
+                            Якщо вимкнути, оголошення не буде видалене, але зникне із загального пошуку.
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                            <i class="bi bi-check2-circle me-2"></i> Зберегти зміни
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

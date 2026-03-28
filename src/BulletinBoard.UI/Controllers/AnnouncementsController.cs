@@ -1,4 +1,5 @@
 ﻿using BulletinBoard.UI.Clients;
+using BulletinBoard.UI.Mappers;
 using BulletinBoard.UI.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,6 +53,41 @@ namespace BulletinBoard.UI.Controllers
 
             await _apiClient.CreateAsync(dto);
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: /Announcements/Edit/5
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var announcement = await _apiClient.GetByIdAsync(id);
+            if (announcement == null)
+            {
+                return NotFound();
+            }
+
+            var updateDto = announcement.ToUpdateDto();
+
+            return View(updateDto);
+        }
+
+        // POST: /Announcements/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, UpdateAnnouncementDto dto)
+        {
+            if (id != dto.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            await _apiClient.UpdateAsync(id, dto);
+
+            return RedirectToAction(nameof(Details), new { id });
         }
 
         // GET: /Announcements/Delete/5
