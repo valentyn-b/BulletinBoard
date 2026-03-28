@@ -1,5 +1,7 @@
 ﻿using BulletinBoard.UI.Models.Dtos;
 using BulletinBoard.UI.Models.Enums;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BulletinBoard.UI.Clients
 {
@@ -7,10 +9,17 @@ namespace BulletinBoard.UI.Clients
     {
         private readonly HttpClient _httpClient;
         private const string BaseEndpoint = "api/announcements";
+        private readonly JsonSerializerOptions _jsonOptions;
 
         public AnnouncementApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
+
+            _jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
+            };
         }
 
         public async Task<IEnumerable<AnnouncementDto>> GetAllAsync(Category? category = null, SubCategory? subCategory = null)
@@ -24,7 +33,7 @@ namespace BulletinBoard.UI.Clients
                 ? $"{BaseEndpoint}?{string.Join("&", queryParams)}"
                 : BaseEndpoint;
 
-            return await _httpClient.GetFromJsonAsync<IEnumerable<AnnouncementDto>>(url)
+            return await _httpClient.GetFromJsonAsync<IEnumerable<AnnouncementDto>>(url, _jsonOptions)
                    ?? Array.Empty<AnnouncementDto>();
         }
 

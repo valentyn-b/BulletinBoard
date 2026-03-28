@@ -1,0 +1,51 @@
+﻿@model BulletinBoard.UI.Models.Dtos.CreateAnnouncementDto
+@using BulletinBoard.UI.Models.Enums
+
+@{
+    ViewData["Title"] = "Створити оголошення";
+}
+
+<div class="container mt-4" style="max-width: 700px;">
+    <div class="d-flex align-items-center mb-4">
+        <a asp-controller="Announcements" asp-action="Index" class="btn btn-light rounded-circle me-3 shadow-sm d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h2 class="fw-bold mb-0">Нове оголошення</h2>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+        <form asp-controller="Announcements" asp-action="Create" method="post">
+            <div class="mb-4">
+                <label asp-for="Title" class="form-label fw-semibold">Заголовок</label>
+                <input asp-for="Title" class="form-control form-control-lg rounded-3" placeholder="Наприклад: Продам ноутбук" required />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Description" class="form-label fw-semibold">Опис</label>
+                <textarea asp-for="Description" class="form-control rounded-3" rows="5" placeholder="Детально опишіть ваш товар..." required></textarea>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label asp-for="Category" class="form-label fw-semibold">Категорія</label>
+                    <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-select form-select-lg rounded-3">
+                        <option value="">-- Оберіть --</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="SubCategory" class="form-label fw-semibold">Підкатегорія</label>
+                    <select asp-for="SubCategory" asp-items="Html.GetEnumSelectList<SubCategory>()" class="form-select form-select-lg rounded-3">
+                        <option value="">-- Оберіть --</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr class="my-4 text-muted">
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a asp-controller="Announcements" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Скасувати</a>
+                <button type="submit" class="btn btn-primary rounded-pill px-5 shadow-sm">Опублікувати</button>
+            </div>
+        </form>
+    </div>
+</div>
