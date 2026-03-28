@@ -1,3 +1,4 @@
+using BulletinBoard.UI.Clients;
 using BulletinBoard.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -6,9 +7,18 @@ namespace BulletinBoard.UI.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IAnnouncementApiClient _apiClient;
+
+        public HomeController(IAnnouncementApiClient apiClient)
         {
-            return View();
+            _apiClient = apiClient;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var announcements = await _apiClient.GetAllAsync();
+
+            return View(announcements);
         }
 
         public IActionResult Privacy()

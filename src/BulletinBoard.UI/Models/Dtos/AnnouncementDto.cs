@@ -1,6 +1,6 @@
 ﻿using BulletinBoard.UI.Models.Enums;
 
-namespace BulletinBoard.Core.Dtos
+namespace BulletinBoard.UI.Models.Dtos
 {
     public class AnnouncementDto
     {
