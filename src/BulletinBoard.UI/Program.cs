@@ -1,7 +1,20 @@
+using BulletinBoard.UI.Clients;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var apiBaseUrl = builder.Configuration["ApiSettings:BaseUrl"];
+if (string.IsNullOrEmpty(apiBaseUrl))
+{
+    throw new InvalidOperationException("API BaseUrl is not configured in appsettings.json");
+}
+
+builder.Services.AddHttpClient<IAnnouncementApiClient, AnnouncementApiClient>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+});
 
 var app = builder.Build();
 
