@@ -1,12 +1,14 @@
 ﻿using BulletinBoard.Core.Application.Dtos;
 using BulletinBoard.Core.Application.Interfaces;
 using BulletinBoard.Core.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulletinBoard.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AnnouncementsController : ControllerBase
     {
         private readonly IAnnouncementService _service;
@@ -26,6 +28,7 @@ namespace BulletinBoard.Api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAll([FromQuery] Category? category = null, [FromQuery] SubCategory? subCategory = null)
         {
             var announcements = await _service.GetAllAsync(category, subCategory);
@@ -35,6 +38,7 @@ namespace BulletinBoard.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetById(int id)
         {
             var announcement = await _service.GetByIdAsync(id);

@@ -1,7 +1,7 @@
 ﻿using BulletinBoard.UI.Models.Dtos;
 using BulletinBoard.UI.Models.Enums;
 
-namespace BulletinBoard.UI.Clients
+namespace BulletinBoard.UI.Interfaces
 {
     public interface IAnnouncementApiClient
     {

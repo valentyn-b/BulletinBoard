@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using BulletinBoard.UI.Interfaces;
 using BulletinBoard.UI.Models.Dtos;
 using BulletinBoard.UI.Models.Enums;
 

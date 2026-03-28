@@ -1,4 +1,4 @@
-﻿using BulletinBoard.UI.Clients;
+﻿using BulletinBoard.UI.Interfaces;
 using BulletinBoard.UI.Mappers;
 using BulletinBoard.UI.Models.Dtos;
 using BulletinBoard.UI.Models.Enums;
