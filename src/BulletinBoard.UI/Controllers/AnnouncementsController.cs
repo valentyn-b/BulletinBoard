@@ -1,7 +1,9 @@
 ﻿using BulletinBoard.UI.Clients;
 using BulletinBoard.UI.Mappers;
 using BulletinBoard.UI.Models.Dtos;
+using BulletinBoard.UI.Models.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BulletinBoard.UI.Controllers
 {
@@ -15,9 +17,14 @@ namespace BulletinBoard.UI.Controllers
         }
 
         // GET: /Announcements
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Category? category, SubCategory? subCategory)
         {
-            var announcements = await _apiClient.GetAllAsync();
+            var announcements = await _apiClient.GetAllAsync(category, subCategory);
+
+            ViewBag.CurrentCategory = category;
+            ViewBag.CurrentSubCategory = subCategory;
+            ViewBag.CategoryRules = GetCategoryRulesJson();
+
             return View(announcements);
         }
 
@@ -39,6 +46,7 @@ namespace BulletinBoard.UI.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.CategoryRules = GetCategoryRulesJson();
             return View();
         }
 
@@ -60,12 +68,15 @@ namespace BulletinBoard.UI.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var announcement = await _apiClient.GetByIdAsync(id);
+
             if (announcement == null)
             {
                 return NotFound();
             }
 
             var updateDto = announcement.ToUpdateDto();
+
+            ViewBag.CategoryRules = GetCategoryRulesJson();
 
             return View(updateDto);
         }
@@ -110,6 +121,19 @@ namespace BulletinBoard.UI.Controllers
             await _apiClient.DeleteAsync(id);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private string GetCategoryRulesJson()
+        {
+            var categoryMap = Enum.GetValues(typeof(Category)).Cast<Category>()
+                .ToDictionary(
+                    c => (int)c,
+                    c => Enum.GetValues(typeof(SubCategory)).Cast<SubCategory>()
+                             .Where(s => (int)s >= (int)c * 100 && (int)s < ((int)c + 1) * 100)
+                             .Select(s => (int)s)
+                             .ToList()
+                );
+            return JsonSerializer.Serialize(categoryMap);
         }
     }
 }

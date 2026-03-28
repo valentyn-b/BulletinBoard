@@ -49,3 +49,13 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const rules = @Html.Raw(ViewBag.CategoryRules);
+        initCategoryCascade('Category', 'SubCategory', rules);
+    </script>
+}
