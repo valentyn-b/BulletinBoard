@@ -53,5 +53,27 @@ namespace BulletinBoard.UI.Controllers
             await _apiClient.CreateAsync(dto);
             return RedirectToAction(nameof(Index));
         }
+
+        // GET: /Announcements/Delete/5
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var announcement = await _apiClient.GetByIdAsync(id);
+            if (announcement == null)
+            {
+                return NotFound();
+            }
+
+            return View(announcement);
+        }
+
+        // POST: /Announcements/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _apiClient.DeleteAsync(id);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

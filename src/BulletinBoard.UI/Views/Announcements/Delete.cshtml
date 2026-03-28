@@ -1,0 +1,38 @@
+﻿@model BulletinBoard.UI.Models.Dtos.AnnouncementDto
+
+@{
+    ViewData["Title"] = "Видалення оголошення";
+}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card border-danger shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header bg-danger text-white p-4 text-center">
+            <i class="bi bi-exclamation-triangle display-4"></i>
+            <h2 class="fw-bold mt-2 mb-0">Ви впевнені?</h2>
+        </div>
+        
+        <div class="card-body p-4 p-md-5 text-center">
+            <h5 class="text-muted mb-4">Ви збираєтесь назавжди видалити це оголошення:</h5>
+            <div class="p-3 bg-light rounded-3 mb-4 text-start border border-danger border-opacity-25">
+                <h4 class="fw-bold mb-2">@Model.Title</h4>
+                <p class="text-muted small mb-0">
+                    <span class="badge bg-secondary me-2">@Model.Category</span>
+                    Опубліковано: @Model.CreatedDate.ToString("dd.MM.yyyy")
+                </p>
+            </div>
+            <p class="text-danger fw-semibold mb-0">Цю дію неможливо буде скасувати!</p>
+        </div>
+
+        <div class="card-footer bg-white border-top-0 p-4 d-flex justify-content-center gap-3">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary rounded-pill px-4">
+                Скасувати
+            </a>
+            
+            <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                <button type="submit" class="btn btn-danger rounded-pill px-5 shadow-sm">
+                    Так, видалити
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
