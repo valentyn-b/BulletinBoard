@@ -1,6 +1,7 @@
-﻿using BulletinBoard.Core.Dtos;
-using BulletinBoard.Core.Enums;
-using BulletinBoard.Core.Interfaces;
+﻿using BulletinBoard.Core.Application.Dtos;
+using BulletinBoard.Core.Application.Interfaces;
+using BulletinBoard.Core.Domain.Entities;
+using BulletinBoard.Core.Domain.Enums;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -16,16 +17,17 @@ namespace BulletinBoard.Infrastructure.Repositories
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<int> CreateAsync(CreateAnnouncementDto dto)
+        public async Task<int> CreateAsync(Announcement entity)
         {
             using var connection = new SqlConnection(_connectionString);
 
             var parameters = new DynamicParameters();
-            parameters.Add("Title", dto.Title);
-            parameters.Add("Description", dto.Description);
-            parameters.Add("Category", (int)dto.Category);
-            parameters.Add("SubCategory", (int)dto.SubCategory);
-            parameters.Add("AuthorId", dto.AuthorId);
+
+            parameters.Add("Title", entity.Title);
+            parameters.Add("Description", entity.Description);
+            parameters.Add("Category", (int)entity.Category);
+            parameters.Add("SubCategory", (int)entity.SubCategory);
+            parameters.Add("AuthorId", entity.AuthorId);
 
             parameters.Add("NewId", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
@@ -40,7 +42,6 @@ namespace BulletinBoard.Infrastructure.Repositories
         public async Task<IEnumerable<AnnouncementDto>> GetAllAsync(Category? category = null, SubCategory? subCategory = null)
         {
             using var connection = new SqlConnection(_connectionString);
-
             var parameters = new { Category = (int?)category, SubCategory = (int?)subCategory };
 
             return await connection.QueryAsync<AnnouncementDto>(
@@ -59,18 +60,18 @@ namespace BulletinBoard.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
         }
 
-        public async Task UpdateAsync(UpdateAnnouncementDto dto)
+        public async Task UpdateAsync(Announcement entity)
         {
             using var connection = new SqlConnection(_connectionString);
 
             var parameters = new
             {
-                Id = dto.Id,
-                Title = dto.Title,
-                Description = dto.Description,
-                Category = (int)dto.Category,
-                SubCategory = (int)dto.SubCategory,
-                Status = dto.Status
+                entity.Id,
+                entity.Title,
+                entity.Description,
+                Category = (int)entity.Category,
+                SubCategory = (int)entity.SubCategory,
+                entity.Status
             };
 
             await connection.ExecuteAsync(

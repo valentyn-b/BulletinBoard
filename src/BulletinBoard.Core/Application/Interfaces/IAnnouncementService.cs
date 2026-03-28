@@ -1,7 +1,7 @@
-﻿using BulletinBoard.Core.Dtos;
-using BulletinBoard.Core.Enums;
+﻿using BulletinBoard.Core.Application.Dtos;
+using BulletinBoard.Core.Domain.Enums;
 
-namespace BulletinBoard.Core.Interfaces
+namespace BulletinBoard.Core.Application.Interfaces
 {
     public interface IAnnouncementService
     {

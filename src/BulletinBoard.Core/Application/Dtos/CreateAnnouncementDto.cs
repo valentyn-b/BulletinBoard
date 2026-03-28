@@ -1,7 +1,7 @@
-﻿using BulletinBoard.Core.Enums;
+﻿using BulletinBoard.Core.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace BulletinBoard.Core.Dtos
+namespace BulletinBoard.Core.Application.Dtos
 {
     public class CreateAnnouncementDto
     {

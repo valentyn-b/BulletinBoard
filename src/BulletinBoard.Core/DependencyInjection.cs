@@ -1,5 +1,5 @@
-﻿using BulletinBoard.Core.Interfaces;
-using BulletinBoard.Core.Services;
+﻿using BulletinBoard.Core.Application.Interfaces;
+using BulletinBoard.Core.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BulletinBoard.Core

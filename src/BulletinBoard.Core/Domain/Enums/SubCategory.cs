@@ -1,4 +1,4 @@
-﻿namespace BulletinBoard.Core.Enums
+﻿namespace BulletinBoard.Core.Domain.Enums
 {
     public enum SubCategory
     {

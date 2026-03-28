@@ -1,4 +1,4 @@
-﻿using BulletinBoard.Core.Interfaces;
+﻿using BulletinBoard.Core.Application.Interfaces;
 using BulletinBoard.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

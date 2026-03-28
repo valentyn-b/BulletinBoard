@@ -1,8 +1,9 @@
-﻿using BulletinBoard.Core.Dtos;
-using BulletinBoard.Core.Enums;
-using BulletinBoard.Core.Interfaces;
+﻿using BulletinBoard.Core.Application.Dtos;
+using BulletinBoard.Core.Application.Interfaces;
+using BulletinBoard.Core.Application.Mappers;
+using BulletinBoard.Core.Domain.Enums;
 
-namespace BulletinBoard.Core.Services
+namespace BulletinBoard.Core.Application.Services
 {
     public class AnnouncementService : IAnnouncementService
     {
@@ -16,7 +17,9 @@ namespace BulletinBoard.Core.Services
         public async Task<int> CreateAsync(CreateAnnouncementDto dto, string? authorId = null)
         {
             dto.AuthorId = authorId;
-            return await _repository.CreateAsync(dto);
+
+            var entity = dto.ToEntity();
+            return await _repository.CreateAsync(entity);
         }
 
         public async Task<IEnumerable<AnnouncementDto>> GetAllAsync(Category? category = null, SubCategory? subCategory = null)
@@ -31,7 +34,8 @@ namespace BulletinBoard.Core.Services
 
         public async Task UpdateAsync(UpdateAnnouncementDto dto, string? currentUserId = null)
         {
-            await _repository.UpdateAsync(dto);
+            var entity = dto.ToEntity();
+            await _repository.UpdateAsync(entity);
         }
 
         public async Task DeleteAsync(int id, string? currentUserId = null)

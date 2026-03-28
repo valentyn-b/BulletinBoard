@@ -1,6 +1,6 @@
-﻿using BulletinBoard.Core.Enums;
+﻿using BulletinBoard.Core.Domain.Enums;
 
-namespace BulletinBoard.Core.Entities
+namespace BulletinBoard.Core.Domain.Entities
 {
     public class Announcement
     {

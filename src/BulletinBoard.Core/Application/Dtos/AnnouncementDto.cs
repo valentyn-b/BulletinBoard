@@ -1,6 +1,6 @@
-﻿using BulletinBoard.Core.Enums;
+﻿using BulletinBoard.Core.Domain.Enums;
 
-namespace BulletinBoard.Core.Dtos
+namespace BulletinBoard.Core.Application.Dtos
 {
     public class AnnouncementDto
     {
