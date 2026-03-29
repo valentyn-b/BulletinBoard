@@ -17,36 +17,39 @@ namespace BulletinBoard.UI
                 throw new InvalidOperationException("API BaseUrl is not configured in appsettings.json");
             }
 
-            services.AddHttpClient<IAnnouncementApiClient, AnnouncementApiClient>(client =>
-            {
-                client.BaseAddress = new Uri(apiBaseUrl);
-            });
+            services
+                .AddHttpClient<IAnnouncementApiClient, AnnouncementApiClient>(client =>
+                {
+                    client.BaseAddress = new Uri(apiBaseUrl);
+                })
+                .AddHttpMessageHandler<JwtAuthHeaderHandler>();
 
             return services;
         }
 
         public static IServiceCollection AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-
-            services.AddScoped<GoogleOAuthEvents>();
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            })
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/Home/Index";
-            })
-            .AddGoogle(options =>
-            {
-                options.ClientId = configuration["Authentication:Google:ClientId"]!;
-                options.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
-                options.EventsType = typeof(GoogleOAuthEvents);
-            });
+            services
+                .AddHttpContextAccessor()
+                .AddTransient<JwtAuthHeaderHandler>()
+                .Configure<JwtSettings>(configuration.GetSection("JwtSettings"))
+                .AddScoped<IJwtTokenGenerator, JwtTokenGenerator>()
+                .AddScoped<GoogleOAuthEvents>()
+                .AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                })
+                .AddCookie(options =>
+                    {
+                        options.LoginPath = "/login";
+                    })
+                .AddGoogle(options =>
+                    {
+                        options.ClientId = configuration["Authentication:Google:ClientId"]!;
+                        options.ClientSecret = configuration["Authentication:Google:ClientSecret"]!;
+                        options.EventsType = typeof(GoogleOAuthEvents);
+                    });            
 
             return services;
         }

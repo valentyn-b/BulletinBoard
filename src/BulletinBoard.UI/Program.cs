@@ -12,15 +12,14 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    app.UseExceptionHandler("/Home/Error")
+       .UseHsts();
 }
 
-app.UseHttpsRedirection();
-
-app.UseRouting();
-
-app.UseAuthorization();
+app.UseHttpsRedirection()
+    .UseRouting()
+    .UseAuthentication()
+    .UseAuthorization();
 
 app.MapStaticAssets();
 

@@ -2,6 +2,7 @@
 using BulletinBoard.UI.Mappers;
 using BulletinBoard.UI.Models.Dtos;
 using BulletinBoard.UI.Models.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -43,6 +44,7 @@ namespace BulletinBoard.UI.Controllers
         }
 
         // GET: /Announcements/Create
+        [Authorize]
         [HttpGet]
         public IActionResult Create()
         {
@@ -51,6 +53,7 @@ namespace BulletinBoard.UI.Controllers
         }
 
         // POST: /Announcements/Create
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateAnnouncementDto dto)
         {
@@ -64,6 +67,7 @@ namespace BulletinBoard.UI.Controllers
         }
 
         // GET: /Announcements/Edit/5
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -82,6 +86,7 @@ namespace BulletinBoard.UI.Controllers
         }
 
         // POST: /Announcements/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, UpdateAnnouncementDto dto)
@@ -102,6 +107,7 @@ namespace BulletinBoard.UI.Controllers
         }
 
         // GET: /Announcements/Delete/5
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -115,6 +121,7 @@ namespace BulletinBoard.UI.Controllers
         }
 
         // POST: /Announcements/Delete/5
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -3,6 +3,7 @@ using BulletinBoard.Core.Application.Interfaces;
 using BulletinBoard.Core.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BulletinBoard.Api.Controllers
 {
@@ -18,10 +19,17 @@ namespace BulletinBoard.Api.Controllers
             _service = service;
         }
 
+        private string? GetCurrentUserId()
+        {
+            return User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAnnouncementDto dto)
         {
-            var newId = await _service.CreateAsync(dto);
+            var authorId = GetCurrentUserId();
+
+            var newId = await _service.CreateAsync(dto, authorId);
 
             // 201
             return CreatedAtAction(nameof(GetById), new { id = newId }, new { Id = newId });
@@ -35,6 +43,18 @@ namespace BulletinBoard.Api.Controllers
 
             // 200
             return Ok(announcements);
+        }
+
+        [HttpGet("my")]
+        public async Task<IActionResult> GetMyAnnouncements()
+        {
+            var userId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var all = await _service.GetAllAsync();
+            var myAnnouncements = all.Where(a => a.AuthorId == userId);
+
+            return Ok(myAnnouncements);
         }
 
         [HttpGet("{id}")]
@@ -69,6 +89,13 @@ namespace BulletinBoard.Api.Controllers
                 return NotFound();
             }
 
+            var currentUserId = GetCurrentUserId();
+            if (existing.AuthorId != currentUserId)
+            {
+                // 403
+                return Forbid();
+            }
+
             await _service.UpdateAsync(dto);
 
             // 204
@@ -81,7 +108,15 @@ namespace BulletinBoard.Api.Controllers
             var existing = await _service.GetByIdAsync(id);
             if (existing == null)
             {
+                // 404
                 return NotFound();
+            }
+
+            var currentUserId = GetCurrentUserId();
+            if (existing.AuthorId != currentUserId)
+            {
+                // 403
+                return Forbid();
             }
 
             await _service.DeleteAsync(id);
