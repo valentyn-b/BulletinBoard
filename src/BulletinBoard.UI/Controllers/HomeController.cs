@@ -1,6 +1,4 @@
-using BulletinBoard.UI.Clients;
 using BulletinBoard.UI.Models;
-using BulletinBoard.UI.Models.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

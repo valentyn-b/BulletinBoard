@@ -1,6 +1,5 @@
 ﻿using BulletinBoard.UI.Interfaces;
-using BulletinBoard.UI.Mappers;
-using BulletinBoard.UI.Models.Dtos;
+using BulletinBoard.UI.Models;
 using BulletinBoard.UI.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +28,14 @@ namespace BulletinBoard.UI.Controllers
             return View(announcements);
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> MyAnnouncements()
+        {
+            var myAnnouncements = await _apiClient.GetMyAnnouncementsAsync();
+            return View(myAnnouncements);
+        }
+
         // GET: /Announcements/Details/5
         [HttpGet]
         public async Task<IActionResult> Details(int id)
@@ -55,7 +62,7 @@ namespace BulletinBoard.UI.Controllers
         // POST: /Announcements/Create
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateAnnouncementDto dto)
+        public async Task<IActionResult> Create(CreateAnnouncementViewModel dto)
         {
             if (!ModelState.IsValid)
             {
@@ -78,18 +85,26 @@ namespace BulletinBoard.UI.Controllers
                 return NotFound();
             }
 
-            var updateDto = announcement.ToUpdateDto();
+            var updateVm = new UpdateAnnouncementViewModel
+            {
+                Id = announcement.Id,
+                Title = announcement.Title,
+                Description = announcement.Description,
+                Category = announcement.Category,
+                SubCategory = announcement.SubCategory,
+                Status = announcement.Status
+            };
 
             ViewBag.CategoryRules = GetCategoryRulesJson();
 
-            return View(updateDto);
+            return View(updateVm);
         }
 
         // POST: /Announcements/Edit/5
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, UpdateAnnouncementDto dto)
+        public async Task<IActionResult> Edit(int id, UpdateAnnouncementViewModel dto)
         {
             if (id != dto.Id)
             {

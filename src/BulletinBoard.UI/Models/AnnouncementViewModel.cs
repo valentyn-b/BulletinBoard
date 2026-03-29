@@ -1,8 +1,8 @@
 ﻿using BulletinBoard.UI.Models.Enums;
 
-namespace BulletinBoard.UI.Models.Dtos
+namespace BulletinBoard.UI.Models
 {
-    public class AnnouncementDto
+    public class AnnouncementViewModel
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;

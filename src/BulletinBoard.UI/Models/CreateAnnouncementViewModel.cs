@@ -1,9 +1,9 @@
 ﻿using BulletinBoard.UI.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace BulletinBoard.UI.Models.Dtos
+namespace BulletinBoard.UI.Models
 {
-    public class CreateAnnouncementDto
+    public class CreateAnnouncementViewModel
     {
         [Required(ErrorMessage = "Title is required")]
         [MaxLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
@@ -17,7 +17,5 @@ namespace BulletinBoard.UI.Models.Dtos
 
         [Required(ErrorMessage = "Subcategory is required")]
         public SubCategory SubCategory { get; set; }
-
-        public string? AuthorId { get; set; }
     }
 }

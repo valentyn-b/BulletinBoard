@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using BulletinBoard.UI.Interfaces;
-using BulletinBoard.UI.Models.Dtos;
+using BulletinBoard.UI.Models;
 using BulletinBoard.UI.Models.Enums;
 
 namespace BulletinBoard.UI.Clients
@@ -23,7 +23,7 @@ namespace BulletinBoard.UI.Clients
             };
         }
 
-        public async Task<IEnumerable<AnnouncementDto>> GetAllAsync(Category? category = null, SubCategory? subCategory = null)
+        public async Task<IEnumerable<AnnouncementViewModel>> GetAllAsync(Category? category = null, SubCategory? subCategory = null)
         {
             var queryParams = new List<string>();
 
@@ -34,22 +34,28 @@ namespace BulletinBoard.UI.Clients
                 ? $"{BaseEndpoint}?{string.Join("&", queryParams)}"
                 : BaseEndpoint;
 
-            return await _httpClient.GetFromJsonAsync<IEnumerable<AnnouncementDto>>(url, _jsonOptions)
-                   ?? Array.Empty<AnnouncementDto>();
+            return await _httpClient.GetFromJsonAsync<IEnumerable<AnnouncementViewModel>>(url, _jsonOptions)
+                   ?? Array.Empty<AnnouncementViewModel>();
         }
 
-        public async Task<AnnouncementDto?> GetByIdAsync(int id)
+        public async Task<AnnouncementViewModel?> GetByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<AnnouncementDto>($"{BaseEndpoint}/{id}", _jsonOptions);
+            return await _httpClient.GetFromJsonAsync<AnnouncementViewModel>($"{BaseEndpoint}/{id}", _jsonOptions);
         }
 
-        public async Task CreateAsync(CreateAnnouncementDto dto)
+        public async Task<IEnumerable<AnnouncementViewModel>> GetMyAnnouncementsAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<IEnumerable<AnnouncementViewModel>>($"{BaseEndpoint}/my", _jsonOptions)
+                   ?? Array.Empty<AnnouncementViewModel>();
+        }
+
+        public async Task CreateAsync(CreateAnnouncementViewModel dto)
         {
             var response = await _httpClient.PostAsJsonAsync(BaseEndpoint, dto, _jsonOptions);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task UpdateAsync(int id, UpdateAnnouncementDto dto)
+        public async Task UpdateAsync(int id, UpdateAnnouncementViewModel dto)
         {
             var response = await _httpClient.PutAsJsonAsync($"{BaseEndpoint}/{id}", dto, _jsonOptions);
             response.EnsureSuccessStatusCode();

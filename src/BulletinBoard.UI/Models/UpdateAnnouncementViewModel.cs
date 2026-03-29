@@ -1,9 +1,9 @@
 ﻿using BulletinBoard.UI.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace BulletinBoard.UI.Models.Dtos
+namespace BulletinBoard.UI.Models
 {
-    public class UpdateAnnouncementDto
+    public class UpdateAnnouncementViewModel
     {
         [Required]
         public int Id { get; set; }

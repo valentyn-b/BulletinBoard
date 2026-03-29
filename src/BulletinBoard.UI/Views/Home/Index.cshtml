@@ -2,52 +2,44 @@
     ViewData["Title"] = "Головна";
 }
 
-<div class="container py-5 text-center">
-    <div class="p-5 mb-4 bg-light rounded-4 shadow-sm">
-        <div class="container-fluid py-5">
-            <h1 class="display-4 fw-bold text-primary mb-3">Сучасна Дошка Оголошень</h1>
-            <p class="col-md-8 mx-auto fs-4 text-muted mb-5">
-                Продавайте те, що вам більше не потрібно, та знаходьте чудові речі за вигідними цінами.
-                Швидко, безпечно та зручно.
-            </p>
-            <div class="d-flex justify-content-center gap-3">
-                <a asp-controller="Announcements" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
-                    Дивитись оголошення
-                </a>
-                <a asp-controller="Announcements" asp-action="Create" class="btn btn-outline-secondary btn-lg rounded-pill px-5 bg-white">
-                    Додати своє
-                </a>
-            </div>
+<div class="container mt-5 text-center">
+    <h2 class="fw-bold mb-5" style="color: #002f34;">Розділи на сервісі BulletinBoard</h2>
+    
+    <div class="row justify-content-center g-4">
+        <div class="col-6 col-md-3 col-lg-2">
+            <a asp-controller="Announcements" asp-action="Index" asp-route-category="1" class="category-link d-block">
+                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
+                    <i class="bi bi-house-gear fs-1" style="color: #002f34;"></i>
+                </div>
+                <span class="fw-semibold">Побутова техніка</span>
+            </a>
         </div>
-    </div>
 
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-        <div class="col d-flex align-items-start text-start">
-            <div class="icon-square bg-light text-primary flex-shrink-0 me-3 rounded-3 p-3 fs-3">
-                <i class="bi bi-speedometer2"></i>
-            </div>
-            <div>
-                <h3 class="fs-4">Швидко</h3>
-                <p>Створіть оголошення менш ніж за хвилину та одразу отримайте перших покупців.</p>
-            </div>
+        <div class="col-6 col-md-3 col-lg-2">
+            <a asp-controller="Announcements" asp-action="Index" asp-route-category="2" class="category-link d-block">
+                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
+                    <i class="bi bi-pc-display fs-1" style="color: #002f34;"></i>
+                </div>
+                <span class="fw-semibold">Комп'ютери</span>
+            </a>
         </div>
-        <div class="col d-flex align-items-start text-start">
-            <div class="icon-square bg-light text-primary flex-shrink-0 me-3 rounded-3 p-3 fs-3">
-                <i class="bi bi-shield-check"></i>
-            </div>
-            <div>
-                <h3 class="fs-4">Безпечно</h3>
-                <p>Ми використовуємо сучасні технології ASP.NET Core для захисту ваших даних.</p>
-            </div>
+
+        <div class="col-6 col-md-3 col-lg-2">
+            <a asp-controller="Announcements" asp-action="Index" asp-route-category="3" class="category-link d-block">
+                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
+                    <i class="bi bi-phone fs-1" style="color: #002f34;"></i>
+                </div>
+                <span class="fw-semibold">Смартфони</span>
+            </a>
         </div>
-        <div class="col d-flex align-items-start text-start">
-            <div class="icon-square bg-light text-primary flex-shrink-0 me-3 rounded-3 p-3 fs-3">
-                <i class="bi bi-phone"></i>
-            </div>
-            <div>
-                <h3 class="fs-4">Зручно</h3>
-                <p>Адаптивний дизайн дозволяє комфортно користуватися дошкою з будь-якого пристрою.</p>
-            </div>
+
+        <div class="col-6 col-md-3 col-lg-2">
+            <a asp-controller="Announcements" asp-action="Index" asp-route-category="4" class="category-link d-block">
+                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
+                    <i class="bi bi-box-seam fs-1" style="color: #002f34;"></i>
+                </div>
+                <span class="fw-semibold">Інше</span>
+            </a>
         </div>
     </div>
 </div>
