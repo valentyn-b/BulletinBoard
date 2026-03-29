@@ -25,104 +25,98 @@ namespace BulletinBoard.Api.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Create([FromBody] CreateAnnouncementDto dto)
         {
             var authorId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(authorId)) return Unauthorized();
 
             var newId = await _service.CreateAsync(dto, authorId);
-
-            // 201
             return CreatedAtAction(nameof(GetById), new { id = newId }, new { Id = newId });
         }
 
         [HttpGet]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(IEnumerable<AnnouncementDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll([FromQuery] Category? category = null, [FromQuery] SubCategory? subCategory = null)
         {
             var announcements = await _service.GetAllAsync(category, subCategory);
-
-            // 200
             return Ok(announcements);
         }
 
         [HttpGet("my")]
+        [ProducesResponseType(typeof(IEnumerable<AnnouncementDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetMyAnnouncements()
         {
             var userId = GetCurrentUserId();
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var all = await _service.GetAllAsync();
-            var myAnnouncements = all.Where(a => a.AuthorId == userId);
-
+            var myAnnouncements = await _service.GetByUserIdAsync(userId);
             return Ok(myAnnouncements);
         }
 
         [HttpGet("{id}")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(AnnouncementDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
             var announcement = await _service.GetByIdAsync(id);
-
-            if (announcement == null)
-            {
-                // 404
-                return NotFound();
-            }
-
-            // 200
+            if (announcement == null) return NotFound();
             return Ok(announcement);
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateAnnouncementDto dto)
         {
-            if (id != dto.Id)
-            {
-                // 400
-                return BadRequest("ID in URL and body must match.");
-            }
-
-            var existing = await _service.GetByIdAsync(id);
-            if (existing == null)
-            {
-                // 404
-                return NotFound();
-            }
+            if (id != dto.Id) return BadRequest("ID in URL and body must match.");
 
             var currentUserId = GetCurrentUserId();
-            if (existing.AuthorId != currentUserId)
+            if (string.IsNullOrEmpty(currentUserId)) return Unauthorized();
+
+            try
             {
-                // 403
+                await _service.UpdateAsync(dto, currentUserId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (UnauthorizedAccessException)
+            {
                 return Forbid();
             }
-
-            await _service.UpdateAsync(dto);
-
-            // 204
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var existing = await _service.GetByIdAsync(id);
-            if (existing == null)
+            var currentUserId = GetCurrentUserId();
+            if (string.IsNullOrEmpty(currentUserId)) return Unauthorized();
+
+            try
             {
-                // 404
+                await _service.DeleteAsync(id, currentUserId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
+            {
                 return NotFound();
             }
-
-            var currentUserId = GetCurrentUserId();
-            if (existing.AuthorId != currentUserId)
+            catch (UnauthorizedAccessException)
             {
-                // 403
                 return Forbid();
             }
-
-            await _service.DeleteAsync(id);
-
-            // 204
-            return NoContent();
         }
     }
 }

@@ -50,6 +50,16 @@ namespace BulletinBoard.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<AnnouncementDto>> GetByUserIdAsync(string userId)
+        {
+            using var connection = new SqlConnection(_connectionString);
+
+            return await connection.QueryAsync<AnnouncementDto>(
+                "sp_GetAnnouncementsByUserId",
+                new { UserId = userId },
+                commandType: CommandType.StoredProcedure);
+        }
+
         public async Task<AnnouncementDto?> GetByIdAsync(int id)
         {
             using var connection = new SqlConnection(_connectionString);

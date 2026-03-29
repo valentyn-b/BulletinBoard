@@ -11,8 +11,8 @@ namespace BulletinBoard.Core.Application.Mappers
             {
                 Title = dto.Title,
                 Description = dto.Description,
-                Category = dto.Category,
-                SubCategory = dto.SubCategory,
+                Category = dto.Category.Value,
+                SubCategory = dto.SubCategory.Value,
                 AuthorId = dto.AuthorId,
                 Status = true,
                 CreatedDate = DateTime.UtcNow
@@ -26,8 +26,8 @@ namespace BulletinBoard.Core.Application.Mappers
                 Id = dto.Id,
                 Title = dto.Title,
                 Description = dto.Description,
-                Category = dto.Category,
-                SubCategory = dto.SubCategory,
+                Category = dto.Category.Value,
+                SubCategory = dto.SubCategory.Value,
                 Status = dto.Status
             };
         }

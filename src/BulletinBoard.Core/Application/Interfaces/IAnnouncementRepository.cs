@@ -8,6 +8,8 @@ namespace BulletinBoard.Core.Application.Interfaces
     {
         Task<IEnumerable<AnnouncementDto>> GetAllAsync(Category? category = null, SubCategory? subCategory = null);
 
+        Task<IEnumerable<AnnouncementDto>> GetByUserIdAsync(string userId);
+
         Task<AnnouncementDto?> GetByIdAsync(int id);
 
         Task<int> CreateAsync(Announcement entity);

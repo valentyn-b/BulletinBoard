@@ -6,9 +6,15 @@ namespace BulletinBoard.Core.Application.Interfaces
     public interface IAnnouncementService
     {
         Task<int> CreateAsync(CreateAnnouncementDto dto, string? authorId = null);
+
         Task<IEnumerable<AnnouncementDto>> GetAllAsync(Category? category = null, SubCategory? subCategory = null);
+
+        Task<IEnumerable<AnnouncementDto>> GetByUserIdAsync(string userId);
+
         Task<AnnouncementDto?> GetByIdAsync(int id);
-        Task UpdateAsync(UpdateAnnouncementDto dto, string? currentUserId = null);
-        Task DeleteAsync(int id, string? currentUserId = null);
+
+        Task UpdateAsync(UpdateAnnouncementDto dto, string currentUserId);
+
+        Task DeleteAsync(int id, string currentUserId);
     }
 }

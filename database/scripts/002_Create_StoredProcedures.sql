@@ -105,3 +105,24 @@ BEGIN
     WHERE [Id] = @Id;
 END
 GO
+
+-- =============================================
+-- 2.2 READ (BY USER ID)
+-- =============================================
+CREATE OR ALTER PROCEDURE [dbo].[sp_GetAnnouncementsByUserId]
+    @UserId NVARCHAR(256)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        [Id], [Title], [Description], [CreatedDate], [Status], 
+        [Category], [SubCategory], [AuthorId]
+    FROM 
+        [dbo].[Announcements]
+    WHERE 
+        [AuthorId] = @UserId
+    ORDER BY 
+        [CreatedDate] DESC;
+END
+GO

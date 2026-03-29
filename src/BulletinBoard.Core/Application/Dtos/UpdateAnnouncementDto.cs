@@ -16,10 +16,10 @@ namespace BulletinBoard.Core.Application.Dtos
         public string Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Category is required")]
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
         [Required(ErrorMessage = "Subcategory is required")]
-        public SubCategory SubCategory { get; set; }
+        public SubCategory? SubCategory { get; set; }
 
         [Required]
         public bool Status { get; set; }

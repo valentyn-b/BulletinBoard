@@ -17,7 +17,6 @@ namespace BulletinBoard.Core.Application.Services
         public async Task<int> CreateAsync(CreateAnnouncementDto dto, string? authorId = null)
         {
             dto.AuthorId = authorId;
-
             var entity = dto.ToEntity();
             return await _repository.CreateAsync(entity);
         }
@@ -27,19 +26,51 @@ namespace BulletinBoard.Core.Application.Services
             return await _repository.GetAllAsync(category, subCategory);
         }
 
+        public async Task<IEnumerable<AnnouncementDto>> GetByUserIdAsync(string userId)
+        {
+            return await _repository.GetByUserIdAsync(userId);
+        }
+
         public async Task<AnnouncementDto?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }
 
-        public async Task UpdateAsync(UpdateAnnouncementDto dto, string? currentUserId = null)
+        public async Task UpdateAsync(UpdateAnnouncementDto dto, string currentUserId)
         {
-            var entity = dto.ToEntity();
-            await _repository.UpdateAsync(entity);
+            var existing = await _repository.GetByIdAsync(dto.Id);
+
+            if (existing == null)
+            {
+                throw new KeyNotFoundException($"Announcement with ID {dto.Id} not found.");
+            }
+
+            if (existing.AuthorId != currentUserId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to update this announcement.");
+            }
+
+            var entityToUpdate = dto.ToEntity();
+            entityToUpdate.AuthorId = existing.AuthorId;
+            entityToUpdate.CreatedDate = existing.CreatedDate;
+
+            await _repository.UpdateAsync(entityToUpdate);
         }
 
-        public async Task DeleteAsync(int id, string? currentUserId = null)
+        public async Task DeleteAsync(int id, string currentUserId)
         {
+            var existing = await _repository.GetByIdAsync(id);
+
+            if (existing == null)
+            {
+                throw new KeyNotFoundException($"Announcement with ID {id} not found.");
+            }
+
+            if (existing.AuthorId != currentUserId)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to delete this announcement.");
+            }
+
             await _repository.DeleteAsync(id);
         }
     }
