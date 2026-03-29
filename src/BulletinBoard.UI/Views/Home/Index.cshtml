@@ -1,45 +1,44 @@
 ﻿@{
     ViewData["Title"] = "Головна";
+
+    var categoryIcons = new Dictionary<BulletinBoard.UI.Models.Enums.Category, string>
+    {
+        { BulletinBoard.UI.Models.Enums.Category.HouseholdAppliances, "bi-house-gear" },
+        { BulletinBoard.UI.Models.Enums.Category.ComputerEquipment, "bi-pc-display" },
+        { BulletinBoard.UI.Models.Enums.Category.Smartphones, "bi-phone" },
+        { BulletinBoard.UI.Models.Enums.Category.Other, "bi-box-seam" }
+    };
+
+    var subcategoryHints = new Dictionary<BulletinBoard.UI.Models.Enums.Category, string>
+    {
+        { BulletinBoard.UI.Models.Enums.Category.HouseholdAppliances, "Холодильники, пральні машини..." },
+        { BulletinBoard.UI.Models.Enums.Category.ComputerEquipment, "Ноутбуки, ПК, монітори..." },
+        { BulletinBoard.UI.Models.Enums.Category.Smartphones, "Apple, Android, аксесуари..." },
+        { BulletinBoard.UI.Models.Enums.Category.Other, "Одяг, іграшки, спорт..." }
+    };
 }
 
-<div class="container mt-5 text-center">
-    <h2 class="fw-bold mb-5" style="color: #002f34;">Розділи на сервісі BulletinBoard</h2>
+<div class="container mt-5 text-center flex-grow-1">
+    
+    <div class="mb-5">
+        <h1 class="fw-bold text-brand-dark mb-3">Розділи на сервісі BulletinBoard</h1>
+        <p class="lead text-muted mx-auto" style="max-width: 600px;">
+            Купуйте та продавайте будь-що швидко, зручно та безпечно. Оберіть категорію, щоб почати пошук.
+        </p>
+    </div>
     
     <div class="row justify-content-center g-4">
-        <div class="col-6 col-md-3 col-lg-2">
-            <a asp-controller="Announcements" asp-action="Index" asp-route-category="1" class="category-link d-block">
-                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
-                    <i class="bi bi-house-gear fs-1" style="color: #002f34;"></i>
-                </div>
-                <span class="fw-semibold">Побутова техніка</span>
-            </a>
-        </div>
-
-        <div class="col-6 col-md-3 col-lg-2">
-            <a asp-controller="Announcements" asp-action="Index" asp-route-category="2" class="category-link d-block">
-                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
-                    <i class="bi bi-pc-display fs-1" style="color: #002f34;"></i>
-                </div>
-                <span class="fw-semibold">Комп'ютери</span>
-            </a>
-        </div>
-
-        <div class="col-6 col-md-3 col-lg-2">
-            <a asp-controller="Announcements" asp-action="Index" asp-route-category="3" class="category-link d-block">
-                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
-                    <i class="bi bi-phone fs-1" style="color: #002f34;"></i>
-                </div>
-                <span class="fw-semibold">Смартфони</span>
-            </a>
-        </div>
-
-        <div class="col-6 col-md-3 col-lg-2">
-            <a asp-controller="Announcements" asp-action="Index" asp-route-category="4" class="category-link d-block">
-                <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle">
-                    <i class="bi bi-box-seam fs-1" style="color: #002f34;"></i>
-                </div>
-                <span class="fw-semibold">Інше</span>
-            </a>
-        </div>
+        @foreach (var category in Enum.GetValues<BulletinBoard.UI.Models.Enums.Category>())
+        {
+            <div class="col-12 col-sm-6 col-md-3">
+                <a asp-controller="Announcements" asp-action="Index" asp-route-category="@((int)category)" class="category-link d-block hover-elevate p-3 rounded-4">
+                    <div class="category-circle mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle shadow-sm border">
+                        <i class="bi @categoryIcons[category] fs-1 text-brand-dark"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">@category.GetDisplayName()</h5>
+                    <small class="text-muted">@subcategoryHints[category]</small>
+                </a>
+            </div>
+        }
     </div>
 </div>

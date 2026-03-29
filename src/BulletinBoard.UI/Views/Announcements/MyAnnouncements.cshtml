@@ -4,27 +4,35 @@
     ViewData["Title"] = "Мої оголошення";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">Мої оголошення</h2>
-    <a asp-action="Create" class="btn btn-success rounded-pill px-4">
-        <i class="bi bi-plus-circle"></i> Створити
-    </a>
-</div>
+<div class="mt-4 flex-grow-1">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <h2 class="fw-bold text-brand-dark mb-0">Мої оголошення</h2>
+        
+        <a asp-action="Create" class="btn btn-primary bg-brand-dark border-0 rounded-pill px-4 shadow-sm hover-elevate">
+            <i class="bi bi-plus-circle me-1"></i> Створити
+        </a>
+    </div>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    @foreach (var item in Model)
+    @if (!Model.Any())
     {
-        <div class="col">
-            <partial name="_AnnouncementCard" model="item" view-data='new ViewDataDictionary(ViewData) { { "ShowActions", true } }' />
+        <div class="text-center mt-5 p-5 bg-light rounded-4 shadow-sm border border-secondary border-opacity-10">
+            <i class="bi bi-inbox text-muted mb-3" style="font-size: 4rem;"></i>
+            <h4 class="fw-bold text-brand-dark">У вас ще немає оголошень</h4>
+            <p class="text-muted mb-4">Створіть своє перше оголошення прямо зараз, щоб швидко знайти покупців!</p>
+            <a asp-action="Create" class="btn btn-outline-secondary rounded-pill px-5 shadow-sm hover-elevate">
+                Додати перше оголошення
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <partial name="_AnnouncementCard" model="item" view-data='new ViewDataDictionary(ViewData) { { "ShowActions", true } }' />
+                </div>
+            }
         </div>
     }
 </div>
-
-@if (!Model.Any())
-{
-    <div class="text-center mt-5">
-        <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
-        <h4 class="mt-3 text-muted">У вас ще немає оголошень</h4>
-        <p>Створіть своє перше оголошення прямо зараз!</p>
-    </div>
-}

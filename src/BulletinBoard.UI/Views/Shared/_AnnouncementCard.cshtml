@@ -1,24 +1,35 @@
 ﻿@model BulletinBoard.UI.Models.AnnouncementViewModel
 
-<div class="card h-100 card-hover border-0 shadow-sm">
-    <div class="card-body">
+<div class="card h-100 hover-elevate border-0 shadow-sm rounded-4">
+    <div class="card-body p-4">
         <div class="d-flex justify-content-between align-items-start mb-2">
-            <span class="badge bg-primary rounded-pill">@Model.Category</span>
-            <small class="text-muted"><i class="bi bi-calendar-event"></i> @Model.CreatedDate.ToString("dd.MM.yyyy")</small>
+            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2">
+                @Model.Category.GetDisplayName()
+            </span>
+            <small class="text-muted mt-1"><i class="bi bi-calendar-event"></i> @Model.CreatedDate.ToString("dd MMM yyyy")</small>
         </div>
-        <h5 class="card-title text-truncate fw-bold">@Model.Title</h5>
-        <p class="card-text text-muted small text-truncate-2">@Model.Description</p>
-    </div>
-    <div class="card-footer bg-white border-top border-light d-flex justify-content-between align-items-center py-3">
-        <a asp-controller="Announcements" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-dark btn-sm px-3 rounded-pill">Деталі</a>
         
-        @* Якщо ми передали флаг ShowActions = true (для сторінки "Мої оголошення"), показуємо кнопки *@
-        @if (ViewData["ShowActions"] as bool? == true)
-        {
-            <div class="btn-group">
-                <a asp-controller="Announcements" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm text-white" title="Редагувати"><i class="bi bi-pencil"></i></a>
-                <a asp-controller="Announcements" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm" title="Видалити"><i class="bi bi-trash"></i></a>
-            </div>
-        }
+        <h5 class="card-title text-truncate fw-bold mt-3 mb-2" title="@Model.Title">@Model.Title</h5>
+        <p class="card-text text-muted small text-truncate-2" title="@Model.Description">@Model.Description</p>
+    </div>
+    
+    <div class="card-footer bg-transparent border-0 p-4 pt-0 d-flex justify-content-between align-items-center">
+        <span class="badge bg-light text-dark border">@Model.SubCategory.GetDisplayName()</span>
+        
+        <div class="d-flex gap-2">
+            <a asp-controller="Announcements" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary btn-sm px-3 rounded-pill">Деталі</a>
+           
+            @if (ViewData["ShowActions"] as bool? == true)
+            {
+                <div class="btn-group shadow-sm">
+                    <a asp-controller="Announcements" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm text-white" title="Редагувати">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a asp-controller="Announcements" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm" title="Видалити">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
 </div>

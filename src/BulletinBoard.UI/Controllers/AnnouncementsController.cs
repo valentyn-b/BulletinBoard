@@ -3,7 +3,6 @@ using BulletinBoard.UI.Models;
 using BulletinBoard.UI.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 namespace BulletinBoard.UI.Controllers
 {
@@ -23,7 +22,6 @@ namespace BulletinBoard.UI.Controllers
 
             ViewBag.CurrentCategory = category;
             ViewBag.CurrentSubCategory = subCategory;
-            ViewBag.CategoryRules = GetCategoryRulesJson();
 
             return View(announcements);
         }
@@ -55,13 +53,13 @@ namespace BulletinBoard.UI.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.CategoryRules = GetCategoryRulesJson();
             return View();
         }
 
         // POST: /Announcements/Create
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateAnnouncementViewModel dto)
         {
             if (!ModelState.IsValid)
@@ -70,7 +68,8 @@ namespace BulletinBoard.UI.Controllers
             }
 
             await _apiClient.CreateAsync(dto);
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(nameof(MyAnnouncements));
         }
 
         // GET: /Announcements/Edit/5
@@ -94,8 +93,6 @@ namespace BulletinBoard.UI.Controllers
                 SubCategory = announcement.SubCategory,
                 Status = announcement.Status
             };
-
-            ViewBag.CategoryRules = GetCategoryRulesJson();
 
             return View(updateVm);
         }
@@ -138,24 +135,12 @@ namespace BulletinBoard.UI.Controllers
         // POST: /Announcements/Delete/5
         [Authorize]
         [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _apiClient.DeleteAsync(id);
 
-            return RedirectToAction(nameof(Index));
-        }
-
-        private string GetCategoryRulesJson()
-        {
-            var categoryMap = Enum.GetValues(typeof(Category)).Cast<Category>()
-                .ToDictionary(
-                    c => (int)c,
-                    c => Enum.GetValues(typeof(SubCategory)).Cast<SubCategory>()
-                             .Where(s => (int)s >= (int)c * 100 && (int)s < ((int)c + 1) * 100)
-                             .Select(s => (int)s)
-                             .ToList()
-                );
-            return JsonSerializer.Serialize(categoryMap);
+            return RedirectToAction(nameof(MyAnnouncements));
         }
     }
 }

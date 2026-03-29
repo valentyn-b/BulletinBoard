@@ -1,44 +1,36 @@
-﻿function initCategoryCascade(categorySelectId, subCategorySelectId, rulesMap) {
+﻿function initCategoryCascade(categorySelectId, subCategorySelectId) {
     const catSelect = document.getElementById(categorySelectId);
     const subCatSelect = document.getElementById(subCategorySelectId);
 
-    if (!catSelect || !subCatSelect || !rulesMap) return;
+    if (!catSelect || !subCatSelect) return;
 
-    let currentSubVal = subCatSelect.value;
+    const allSubOptions = Array.from(subCatSelect.options);
 
-    const allSubOptions = Array.from(subCatSelect.options).map(o => o.cloneNode(true));
-
-    function updateSubCategories() {
-        subCatSelect.innerHTML = '';
+    function filterSubCategories() {
         const selectedCat = catSelect.value;
+        const currentSubVal = subCatSelect.value;
 
-        if (!selectedCat) {
-            allSubOptions.forEach(opt => subCatSelect.appendChild(opt.cloneNode(true)));
-        } else {
-            const defaultOpt = allSubOptions.find(o => o.value === "");
-            if (defaultOpt) subCatSelect.appendChild(defaultOpt.cloneNode(true));
+        subCatSelect.innerHTML = '';
 
-            if (rulesMap[selectedCat]) {
-                const allowed = rulesMap[selectedCat];
-                allSubOptions.forEach(opt => {
-                    if (opt.value && allowed.includes(parseInt(opt.value))) {
-                        subCatSelect.appendChild(opt.cloneNode(true));
-                    }
-                });
-            }
+        const defaultOption = allSubOptions.find(opt => opt.value === "");
+        if (defaultOption) {
+            subCatSelect.appendChild(defaultOption);
         }
 
-        if (currentSubVal && Array.from(subCatSelect.options).some(o => o.value === currentSubVal)) {
+        const filteredOptions = allSubOptions.filter(opt => {
+            return opt.value !== "" && (!selectedCat || opt.dataset.category === selectedCat);
+        });
+
+        filteredOptions.forEach(opt => subCatSelect.appendChild(opt));
+
+        if (filteredOptions.some(opt => opt.value === currentSubVal)) {
             subCatSelect.value = currentSubVal;
         } else {
             subCatSelect.value = '';
         }
     }
 
-    catSelect.addEventListener('change', () => {
-        currentSubVal = '';
-        updateSubCategories();
-    });
+    catSelect.addEventListener('change', filterSubCategories);
 
-    updateSubCategories();
+    filterSubCategories();
 }

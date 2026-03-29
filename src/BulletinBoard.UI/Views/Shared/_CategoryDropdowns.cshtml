@@ -1,0 +1,39 @@
+﻿@model (Category? Category, SubCategory? SubCategory, bool IsRequired)
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label for="categorySelect" class="form-label fw-bold text-brand-dark">Категорія @(Model.IsRequired? Html.Raw("<span class='text-danger'>*</span>") : "")</label>
+        
+        <select name="Category" id="categorySelect" class="form-select shadow-sm border-0"
+            @(Model.IsRequired ? "data-val=\"true\" data-val-required=\"Оберіть категорію\"" : "")>
+            
+            <option value="">@(Model.IsRequired ? "-- Оберіть категорію --" : "Всі категорії")</option>
+            
+            @foreach (var cat in Enum.GetValues<Category>())
+            {
+                <option value="@((int)cat)" selected="@(Model.Category == cat)">
+                    @cat.GetDisplayName()
+                </option>
+            }
+        </select>
+        @Html.ValidationMessage("Category", "", new { @class = "text-danger small" })
+    </div>
+
+    <div class="col-md-6">
+        <label for="subCategorySelect" class="form-label fw-bold text-brand-dark">Підкатегорія @(Model.IsRequired? Html.Raw("<span class='text-danger'>*</span>") : "")</label>
+        
+        <select name="SubCategory" id="subCategorySelect" class="form-select shadow-sm border-0"
+            @(Model.IsRequired ? "data-val=\"true\" data-val-required=\"Оберіть підкатегорію\"" : "")>
+            
+            <option value="">@(Model.IsRequired ? "-- Оберіть підкатегорію --" : "Всі підкатегорії")</option>
+            
+            @foreach (var sub in Enum.GetValues<SubCategory>())
+            {
+                <option value="@((int)sub)" selected="@(Model.SubCategory == sub)" data-category="@(((int)sub) / 100)">
+                    @sub.GetDisplayName()
+                </option>
+            }
+        </select>
+        @Html.ValidationMessage("SubCategory", "", new { @class = "text-danger small" })
+    </div>
+</div>

@@ -5,17 +5,17 @@ namespace BulletinBoard.UI.Models
 {
     public class CreateAnnouncementViewModel
     {
-        [Required(ErrorMessage = "Title is required")]
-        [MaxLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
+        [Required(ErrorMessage = "Введіть назву оголошення")]
+        [MaxLength(100, ErrorMessage = "Назва не може перевищувати 100 символів")]
         public string Title { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Description is required")]
+        [Required(ErrorMessage = "Додайте опис оголошення")]
         public string Description { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Category is required")]
-        public Category Category { get; set; }
+        [Required(ErrorMessage = "Оберіть категорію")]
+        public Category? Category { get; set; }
 
-        [Required(ErrorMessage = "Subcategory is required")]
-        public SubCategory SubCategory { get; set; }
+        [Required(ErrorMessage = "Оберіть підкатегорію")]
+        public SubCategory? SubCategory { get; set; }
     }
 }

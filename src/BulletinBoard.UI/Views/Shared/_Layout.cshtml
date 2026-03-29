@@ -3,19 +3,19 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BulletinBoard.UI</title>
+    <title>@ViewData["Title"] - BulletinBoard</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BulletinBoard.UI.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-brand-dark border-bottom box-shadow mb-4 py-3">
             <div class="container-fluid">
-                <a class="navbar-brand fw-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">BulletinBoard</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <a class="navbar-brand navbar-brand-custom" asp-area="" asp-controller="Home" asp-action="Index">BulletinBoard</a>
+                <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -23,10 +23,7 @@
                     
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark fw-semibold" asp-area="" asp-controller="Announcements" asp-action="Index">Оголошення</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Конфіденційність</a>
+                            <a class="nav-link nav-link-custom fw-semibold" asp-area="" asp-controller="Announcements" asp-action="Index">Переглянути оголошення</a>
                         </li>
                     </ul>
 
@@ -34,25 +31,29 @@
                         @if (User.Identity is { IsAuthenticated: true })
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-dark">
-                                    👋 Привіт, <strong>@User.Identity.Name</strong>!
+                                <span class="nav-link text-brand-light">
+                                    <i class="bi bi-person-circle"></i> @User.Identity.Name
                                 </span>
                             </li>
                             <li class="nav-item ms-3">
-                                <a class="nav-link fw-bold" style="color: #002f34;" asp-controller="Announcements" asp-action="MyAnnouncements">Мої оголошення</a>
+                                <a class="nav-link nav-link-custom fw-bold" asp-controller="Announcements" asp-action="MyAnnouncements">Мої оголошення</a>
                             </li>
-                            <li class="nav-item ms-3">
-                                <a class="btn btn-outline-danger btn-sm px-3" asp-controller="Auth" asp-action="Logout">Вийти</a>
+                            <li class="nav-item ms-3 me-3">
+                                <a class="btn btn-outline-light btn-sm px-3" asp-controller="Auth" asp-action="Logout">Вийти</a>
                             </li>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="btn btn-primary text-white shadow-sm px-4" asp-controller="Auth" asp-action="Login">
-                                    Увійти через Google
+                            <li class="nav-item ms-3 me-3">
+                                <a class="nav-link nav-link-custom fw-bold" asp-controller="Auth" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right"></i> Увійти
                                 </a>
                             </li>
                         }
+
+                        <li class="nav-item border-start border-secondary ps-3">
+                            <a class="btn btn-post-ad px-4 py-2 shadow-sm" asp-controller="Announcements" asp-action="Create">Додати оголошення</a>
+                        </li>
                     </ul>
 
                 </div>
@@ -60,15 +61,20 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container flex-grow-1">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted mt-5">
-        <div class="container">
-            &copy; 2026 - BulletinBoard.UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer-custom mt-auto py-4">
+        <div class="container text-center">
+            <div class="mb-2">
+                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-muted mx-2">Конфіденційність</a>
+                <a href="#" class="text-decoration-none text-muted mx-2">Правила сервісу</a>
+                <a href="#" class="text-decoration-none text-muted mx-2">Допомога</a>
+            </div>
+            <small>&copy; 2026 - BulletinBoard.UI</small>
         </div>
     </footer>
 
