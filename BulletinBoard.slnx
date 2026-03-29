@@ -11,4 +11,7 @@
     <Project Path="src/BulletinBoard.Infrastructure/BulletinBoard.Infrastructure.csproj" Id="36c1b3d1-f98b-4f3d-82bc-391e1aeaabc8" />
     <Project Path="src/BulletinBoard.UI/BulletinBoard.UI.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/BulletinBoard.Tests/BulletinBoard.Tests.csproj" Id="89044e44-ae85-4876-9f74-94f36ce31a96" />
+  </Folder>
 </Solution>
