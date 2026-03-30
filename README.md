@@ -60,6 +60,7 @@ The application is fully hosted on **Microsoft Azure** using Platform as a Servi
 * **API App Service:** Deployed to a dedicated Azure Web App instance.
 * **UI App Service:** Deployed to a separate Azure Web App instance, communicating server-to-server with the API.
 * **Database:** Hosted on Azure SQL Database.
+* **⚠️ Note on Performance (Cold Start):** The application is hosted on Free Tier (F1). If the platform has been inactive, the initial request may experience a noticeable delay (up to a minute) or result in a temporary timeout while the API server wakes up. Refreshing the page will resolve this and restore optimal performance.
 
 ---
 
